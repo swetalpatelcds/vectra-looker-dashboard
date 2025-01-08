@@ -6029,7 +6029,7 @@ explore: udm_enum_value_to_name_mapping {}
 explore: udm_events_aggregates {}
 
 explore: events {
-
+    sql_always_where: ${metadata__log_type} = "VECTRA_DETECT" ;;
     join: events__about {
       view_label: "Events: About"
       sql: LEFT JOIN UNNEST(${events.about}) as events__about ;;
