@@ -6030,6 +6030,8 @@ explore: udm_events_aggregates {}
 
 explore: events {
     sql_always_where: ${metadata__log_type} = "VECTRA_DETECT" ;;
+
+
     join: events__about {
       view_label: "Events: About"
       sql: LEFT JOIN UNNEST(${events.about}) as events__about ;;
@@ -8843,6 +8845,20 @@ explore: events {
     join: events__security_result__detection_fields {
       view_label: "Events: Security Result Detection Fields"
       sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields ;;
+      relationship: one_to_many
+    }
+    join: events__security_result__detection_fields__result {
+      from: events__security_result__detection_fields
+      view_label: "Events: Security Result Detection Fields Result"
+      sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__result
+        ON ${events__security_result__detection_fields__result.key} = 'result' ;;
+      relationship: one_to_many
+    }
+    join: events__security_result__detection_fields__triaged {
+      from: events__security_result__detection_fields
+      view_label: "Events: Security Result Detection Fields Triaged"
+      sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__triaged
+        ON ${events__security_result__detection_fields__triaged.key} = 'triaged' ;;
       relationship: one_to_many
     }
     join: events__target__artifact__network__smtp__rcpt_to {
