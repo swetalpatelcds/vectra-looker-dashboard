@@ -11,7 +11,7 @@
     explore: events
     type: looker_grid
     fields: [events.event_time_time, events.principal_username_standardized, events__principal__user__attribute__roles.name,
-      status, events__security_result.description]
+      status, events__security_result.description, list_of_metadata_product_log_id_2]
     filters:
       events.principal_username_standardized: "-NULL"
     sorts: [events.event_time_time desc]
@@ -36,6 +36,13 @@
       dimension: status
       _kind_hint: dimension
       _type_hint: string
+    - _kind_hint: measure
+      _type_hint: list
+      based_on: events.metadata__product_log_id
+      expression: ''
+      label: List of Metadata Product Log ID
+      measure: list_of_metadata_product_log_id_2
+      type: list
     show_view_names: false
     show_row_numbers: true
     transpose: false
@@ -59,6 +66,7 @@
     series_labels:
       events.principal_username_standardized: Username
       events__security_result.description: Message
+      events__principal__user__attribute__roles.name: Role
     hidden_fields: []
     defaults_version: 1
     hidden_pivots: {}
