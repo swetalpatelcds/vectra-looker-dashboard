@@ -128,5 +128,5 @@
       display: inline
     model: chronicle-poc-test
     explore: events
-    listens_to_filters: [Time]
+    listens_to_filters: []
     field: events__security_result.action_details
