@@ -1,6 +1,6 @@
 ---
-- dashboard: detection
-  title: Detection
+- dashboard: detection_final
+  title: Detection Final
   layout: newspaper
   description: ''
   preferred_slug: MD4y6ECb2vxk0cCwvFCpw8
@@ -113,8 +113,8 @@
       events.entities_pivot_url, events.event_time_time, events.last_principal_data_source]
     listen:
       Behavior: events.metadata__product_event_type
-      Event Time Time: events.event_time_time
       Data Source: events.principal_data_source
+      Time: events.event_time_time
     row: 8
     col: 0
     width: 24
@@ -192,8 +192,8 @@
     defaults_version: 1
     hidden_pivots: {}
     listen:
-      Event Time Time: events.event_time_time
       Data Source: events.principal_data_source
+      Time: events.event_time_time
     row: 2
     col: 0
     width: 24
@@ -210,8 +210,8 @@
     width: 13
     height: 2
   filters:
-  - name: Event Time Time
-    title: Event Time Time
+  - name: Time
+    title: Time
     type: field_filter
     default_value: ''
     allow_multiple_values: true
@@ -235,7 +235,7 @@
       display: inline
     model: chronicle-poc-test
     explore: events
-    listens_to_filters: []
+    listens_to_filters: [Time]
     field: events.metadata__product_event_type
   - name: Data Source
     title: Data Source

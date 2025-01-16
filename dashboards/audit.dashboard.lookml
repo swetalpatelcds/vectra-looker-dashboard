@@ -72,8 +72,8 @@
     hidden_pivots: {}
     listen:
       Username: events__principal__user__email_addresses.events__principal__user__email_addresses
-      Event Time Time: events.event_time_time
       Status: events__security_result.action_details
+      Time: events.event_time_time
     row: 3
     col: 0
     width: 24
@@ -90,8 +90,8 @@
     width: 15
     height: 3
   filters:
-  - name: Event Time Time
-    title: Event Time Time
+  - name: Time
+    title: Time
     type: field_filter
     default_value: ''
     allow_multiple_values: true
@@ -115,7 +115,7 @@
       display: inline
     model: chronicle-poc-test
     explore: events
-    listens_to_filters: [Event Time Time]
+    listens_to_filters: [Time]
     field: events.principal_username_standardized
   - name: Status
     title: Status
@@ -128,5 +128,5 @@
       display: inline
     model: chronicle-poc-test
     explore: events
-    listens_to_filters: [Event Time Time]
+    listens_to_filters: [Time]
     field: events__security_result.action_details
