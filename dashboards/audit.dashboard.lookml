@@ -14,7 +14,7 @@
       status, events__security_result.description]
     filters:
       events.principal_username_standardized: "-NULL"
-    sorts: [events__security_result.description desc]
+    sorts: [events.event_time_time desc]
     limit: 5000
     column_limit: 50
     dynamic_fields:
@@ -47,10 +47,18 @@
     limit_displayed_rows: false
     enable_conditional_formatting: false
     header_text_alignment: left
-    header_font_size: 12
-    rows_font_size: 12
+    header_font_size: '12'
+    rows_font_size: '12'
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
+    show_sql_query_menu_options: false
+    show_totals: true
+    show_row_totals: true
+    truncate_header: false
+    minimum_column_width: 75
+    series_labels:
+      events.principal_username_standardized: Username
+      events__security_result.description: Message
     hidden_fields: []
     defaults_version: 1
     hidden_pivots: {}
@@ -99,8 +107,8 @@
       display: inline
     model: chronicle-poc-test
     explore: events
-    listens_to_filters: []
-    field: events__principal__user__email_addresses.events__principal__user__email_addresses
+    listens_to_filters: [Event Time Time]
+    field: events.principal_username_standardized
   - name: Status
     title: Status
     type: field_filter
@@ -112,5 +120,5 @@
       display: inline
     model: chronicle-poc-test
     explore: events
-    listens_to_filters: []
+    listens_to_filters: [Event Time Time]
     field: events__security_result.action_details

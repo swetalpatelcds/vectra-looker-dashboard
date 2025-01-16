@@ -17,11 +17,11 @@
       events__security_result__detection_fields__disk_disk_utilization_usage_percent.disk_disk_utilization_usage_percent,
       events__security_result__detection_fields__memory_usage_percent.memory_usage_percent,
       events__security_result__detection_fields__network_traffic_brain_aggregated_peak_traffic_mbps.network_traffic_brain_aggregated_peak_traffic_mbps,
-      events__security_result__detection_fields__power_status.power_status, events__security_result__detection_fields__power_error.power_error]
+      events__security_result__detection_fields__power_status.power_status, events__security_result__detection_fields__power_error.power_error,
+      events.event_time_time]
     filters:
       events__security_result__detection_fields__system_version_last_update_utc.system_version_last_update_utc: "-NULL"
-    sorts: [events__security_result__detection_fields__system_version_last_update_utc.system_version_last_update_utc
-        desc]
+    sorts: [events.event_time_time desc]
     limit: 1
     column_limit: 50
     show_view_names: false
@@ -35,10 +35,30 @@
     limit_displayed_rows: false
     enable_conditional_formatting: false
     header_text_alignment: left
-    header_font_size: 12
-    rows_font_size: 12
+    header_font_size: '12'
+    rows_font_size: '12'
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
+    show_sql_query_menu_options: false
+    show_totals: true
+    show_row_totals: true
+    truncate_header: false
+    minimum_column_width: 75
+    series_labels:
+      events__security_result__detection_fields__system_version_last_update_utc.system_version_last_update_utc: Last
+        updated
+      events__security_result__detection_fields__cpu_user_percent.cpu_user_percent: CPU
+        Usage - User(%)
+      events__security_result__detection_fields__cpu_system_percent.cpu_system_percent: CPU
+        Usage - System(%)
+      events__security_result__detection_fields__cpu_idle_percent.cpu_idle_percent: CPU
+        Usage - Idle (%)
+      events__security_result__detection_fields__disk_disk_utilization_usage_percent.disk_disk_utilization_usage_percent: Disk
+        Utilization (%)
+      events__security_result__detection_fields__memory_usage_percent.memory_usage_percent: Memory
+        Usage (%)
+      ? events__security_result__detection_fields__network_traffic_brain_aggregated_peak_traffic_mbps.network_traffic_brain_aggregated_peak_traffic_mbps
+      : Aggregated Peak Traffic (Mbps)
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_y_axis_labels: true
@@ -65,6 +85,7 @@
     show_silhouette: false
     totals_color: "#808080"
     defaults_version: 1
+    hidden_fields: [events.event_time_time]
     listen: {}
     row: 0
     col: 0
@@ -95,10 +116,28 @@
     limit_displayed_rows: false
     enable_conditional_formatting: false
     header_text_alignment: left
-    header_font_size: 12
-    rows_font_size: 12
+    header_font_size: '12'
+    rows_font_size: '12'
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
+    show_sql_query_menu_options: false
+    column_order: ["$$$_row_numbers_$$$", events.observer__hostname, events__observer__ip.events__observer__ip,
+      events__security_result__detection_fields__connectivity_sensors_status.connectivity_sensors_status,
+      events__security_result__detection_fields__network_aggregated_peak_traffic_mbps.network_aggregated_peak_traffic_mbps,
+      events__security_result__detection_fields__trafficdrop_sensors_status.trafficdrop_sensors_status]
+    show_totals: true
+    show_row_totals: true
+    truncate_header: false
+    minimum_column_width: 75
+    series_labels:
+      events.observer__hostname: Name
+      events__observer__ip.events__observer__ip: IP Address
+      events__security_result__detection_fields__network_aggregated_peak_traffic_mbps.network_aggregated_peak_traffic_mbps: Aggregated
+        Peak Traffic (Mbps)
+      events__security_result__detection_fields__connectivity_sensors_status.connectivity_sensors_status: Connectivity
+        Status
+      events__security_result__detection_fields__trafficdrop_sensors_status.trafficdrop_sensors_status: Trafficdrop
+        Status
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_y_axis_labels: true
