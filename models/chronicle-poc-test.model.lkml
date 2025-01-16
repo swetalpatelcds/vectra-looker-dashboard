@@ -8917,6 +8917,12 @@ explore: events {
     fields: [events__security_result__detection_fields__power_error.power_error]
     relationship: one_to_many
   }
+  join: events__additional_fields__key__log_type {
+    view_label: "Events: Additional fields key Log Type"
+    sql: LEFT JOIN UNNEST(${events__additional__fields.key}) as events__additional_fields__key__log_type ON ${events__additional_fields__key__log_type.key} = 'log_type';;
+    fields: [events__additional_fields__key__log_type.log_type]
+    relationship: one_to_many
+  }
   join: events__security_result__detection_fields__type {
     view_label: "Events: Security Result Detection Fields Type"
     sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__type ON ${events__security_result__detection_fields__type.key} = 'type' ;;

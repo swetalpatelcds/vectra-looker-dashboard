@@ -3,18 +3,16 @@
   title: Detection
   layout: newspaper
   description: ''
-  preferred_slug: Ero3omdqBpgeU042Ibxvdd
+  preferred_slug: MD4y6ECb2vxk0cCwvFCpw8
   elements:
   - title: Detection List
     name: Detection List
     model: chronicle-poc-test
     explore: events
     type: looker_grid
-    fields: [events.metadata__product_log_id, entity_name, category, events.metadata__product_event_type,
-      vectra_pivot, events.event_time_time, events.principal_data_source, events__additional__fields.value__string_value]
-    filters:
-      events__additional__fields.key: '"detail_access_key_id","detail_account_created_by","detail_account_id","detail_account_uid"'
-      entity_name: "-NULL"
+    fields: [events.metadata__product_log_id, events.event_time_time, events.last_principal_entity_uid_standardized,
+      events.last_behaviour, events.last_category, events.last_principal_data_source,
+      events.entities_pivot_url]
     sorts: [events.event_time_time desc]
     limit: 500
     column_limit: 50
@@ -35,15 +33,6 @@
       label: List of Metadata Product Log ID
       measure: list_of_metadata_product_log_id
       type: list
-    - category: dimension
-      expression: substring(${events.principal_entity_uid_standardized}, position(${events.principal_entity_uid_standardized},":")+1,
-        length(${events.principal_entity_uid_standardized}))
-      label: Entity name
-      value_format:
-      value_format_name:
-      dimension: entity_name
-      _kind_hint: dimension
-      _type_hint: string
     - category: dimension
       expression: case(when(substring(${events__principal__user__email_addresses.events__principal__user__email_addresses},
         1, position(${events__principal__user__email_addresses.events__principal__user__email_addresses},
@@ -79,6 +68,15 @@
       dimension: category
       _kind_hint: dimension
       _type_hint: string
+    - category: table_calculation
+      expression: substring(${events.last_principal_entity_uid_standardized}, position(${events.last_principal_entity_uid_standardized},":")+1,
+        length(${events.last_principal_entity_uid_standardized}))
+      label: Entity name
+      value_format:
+      value_format_name:
+      _kind_hint: measure
+      table_calculation: entity_name
+      _type_hint: string
     show_view_names: false
     show_row_numbers: true
     transpose: false
@@ -103,13 +101,20 @@
       events.metadata__product_event_type: Behaviour
       events.event_time_time: Last updated
       events__additional__fields.value__string_value: Detection Fields
+      events.last_behaviour: Behaviour
+      events.last_category: Category
+      events.last_principal_data_source: Data Source
+      events.entities_pivot_url: Vectra Pivot
+    series_cell_visualizations: {}
     defaults_version: 1
     hidden_pivots: {}
-    hidden_fields: [events.metadata__product_log_id]
+    hidden_fields: [events.metadata__product_log_id, events.last_principal_entity_uid_standardized]
+    column_order: ["$$$_row_numbers_$$$", entity_name, events.last_category, events.last_behaviour,
+      events.entities_pivot_url, events.event_time_time, events.last_principal_data_source]
     listen:
-      Data Source: events.data_source
       Behavior: events.metadata__product_event_type
       Event Time Time: events.event_time_time
+      Data Source: events.principal_data_source
     row: 8
     col: 0
     width: 24
@@ -188,6 +193,7 @@
     hidden_pivots: {}
     listen:
       Event Time Time: events.event_time_time
+      Data Source: events.principal_data_source
     row: 2
     col: 0
     width: 24
@@ -243,4 +249,4 @@
     model: chronicle-poc-test
     explore: events
     listens_to_filters: []
-    field: events.data_source
+    field: events.principal_data_source

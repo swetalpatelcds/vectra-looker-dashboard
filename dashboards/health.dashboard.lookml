@@ -75,12 +75,14 @@
     model: chronicle-poc-test
     explore: events
     type: looker_grid
-    fields: [events.observer__hostname, events__observer__ip.events__observer__ip,
+    fields: [events.event_time_time, events.observer__hostname, events__observer__ip.events__observer__ip,
       events__security_result__detection_fields__network_aggregated_peak_traffic_mbps.network_aggregated_peak_traffic_mbps,
       events__security_result__detection_fields__connectivity_sensors_status.connectivity_sensors_status,
       events__security_result__detection_fields__trafficdrop_sensors_status.trafficdrop_sensors_status]
-    sorts: [events.observer__hostname]
-    limit: 500
+    filters:
+      events.observer__hostname: "-NULL"
+    sorts: [events.event_time_time desc]
+    limit: 1
     column_limit: 50
     show_view_names: false
     show_row_numbers: true
@@ -123,6 +125,8 @@
     show_silhouette: false
     totals_color: "#808080"
     defaults_version: 1
+    hidden_fields: [events.event_time_time]
+    listen: {}
     row: 4
     col: 0
     width: 24
