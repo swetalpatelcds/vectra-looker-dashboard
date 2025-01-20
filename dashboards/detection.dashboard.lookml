@@ -12,7 +12,7 @@
     type: looker_grid
     fields: [events.event_time_time, events.last_principal_entity_uid_standardized,
       events.last_behaviour, events.last_category, events.last_principal_data_source,
-      events.entities_pivot_url, list_of_metadata_product_log_id]
+      events.entities_pivot_url, list_of_metadata_product_log_id, source_ip]
     filters:
       events.log_type: Detection
     sorts: [events.event_time_time desc]
@@ -79,6 +79,14 @@
       _kind_hint: measure
       table_calculation: entity_name
       _type_hint: string
+    - category: dimension
+      expression: coalesce(${events__principal__ip.events__principal__ip}, "Not Available")
+      label: Source IP
+      value_format:
+      value_format_name:
+      dimension: source_ip
+      _kind_hint: dimension
+      _type_hint: string
     show_view_names: false
     show_row_numbers: true
     transpose: false
@@ -96,7 +104,8 @@
     conditional_formatting_include_nulls: false
     show_sql_query_menu_options: false
     column_order: ["$$$_row_numbers_$$$", entity_name, events.last_category, events.last_behaviour,
-      events.entities_pivot_url, events.event_time_time, events.last_principal_data_source]
+      events.entities_pivot_url, source_ip, events.event_time_time, events.last_principal_data_source,
+      list_of_metadata_product_log_id]
     show_totals: true
     show_row_totals: true
     truncate_header: false
