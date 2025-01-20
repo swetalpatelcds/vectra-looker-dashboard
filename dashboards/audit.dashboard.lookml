@@ -10,12 +10,13 @@
     model: chronicle-poc-test
     explore: events
     type: looker_grid
-    fields: [events.event_time_time, events.principal_username_standardized, events__principal__user__attribute__roles.name,
-      status, events__security_result.description, list_of_metadata_product_log_id_2]
+    fields: [events.metadata__product_log_id, events.last_event_time, events.last_audit_username_standardized,
+      events.last_audit_roles_name, events.last_status, events.last_security_result_description]
     filters:
       events.log_type: Audit
-    sorts: [events.event_time_time desc]
-    limit: 5000
+      events.last_audit_username_standardized: "-NULL"
+    sorts: [events.last_event_time desc]
+    limit: 100
     column_limit: 50
     dynamic_fields:
     - _kind_hint: measure
@@ -67,13 +68,21 @@
       events.principal_username_standardized: Username
       events__security_result.description: Message
       events__principal__user__attribute__roles.name: Role
-    hidden_fields: []
+      events.last_event_time: Event Timestamp
+      events.last_principal_username_standardized: Username
+      events.last_principal_user_attribute_roles_name: Role
+      events.last_status: Status
+      events.last_security_result_description: Message
+      events.last_audit_username_standardized: Username
+      events.last_audit_roles_name: Role
+    series_cell_visualizations: {}
+    hidden_fields:
     defaults_version: 1
     hidden_pivots: {}
     listen:
       Status: events__security_result.action_details
-      Time: events.event_time_time
       Username: events.principal_username_standardized
+      Timerange: events.event_time_time
     row: 3
     col: 0
     width: 24
@@ -105,8 +114,8 @@
     explore: events
     listens_to_filters: []
     field: events.log_type
-  - name: Time
-    title: Time
+  - name: Timerange
+    title: Timerange
     type: field_filter
     default_value: 7 day
     allow_multiple_values: true
@@ -126,12 +135,12 @@
     allow_multiple_values: true
     required: false
     ui_config:
-      type: dropdown_menu
-      display: inline
+      type: advanced
+      display: popover
     model: chronicle-poc-test
     explore: events
-    listens_to_filters: [Time, Log Type]
-    field: events.principal_username_standardized
+    listens_to_filters: []
+    field: events.audit_username_standardized
   - name: Status
     title: Status
     type: field_filter

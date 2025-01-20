@@ -1,6 +1,6 @@
 ---
-- dashboard: detection
-  title: Detection
+- dashboard: detection_final
+  title: Detection Final
   layout: newspaper
   description: ''
   preferred_slug: MD4y6ECb2vxk0cCwvFCpw8
@@ -10,15 +10,24 @@
     model: chronicle-poc-test
     explore: events
     type: looker_grid
-    fields: [events.event_time_time, events.last_principal_entity_uid_standardized,
+    fields: [events.metadata__product_log_id, events.last_principal_entity_uid_standardized,
       events.last_behaviour, events.last_category, events.last_principal_data_source,
-      events.entities_pivot_url, list_of_metadata_product_log_id, source_ip]
+      events.last_event_time, events.last_source_ip]
     filters:
       events.log_type: Detection
-    sorts: [events.event_time_time desc]
+    sorts: [events.last_event_time desc]
     limit: 100
     column_limit: 50
     dynamic_fields:
+    - category: table_calculation
+      expression: substring(${events.last_principal_entity_uid_standardized}, position(${events.last_principal_entity_uid_standardized},":")+1,
+        length(${events.last_principal_entity_uid_standardized}))
+      label: Entity name
+      value_format:
+      value_format_name:
+      _kind_hint: measure
+      table_calculation: entity_name
+      _type_hint: string
     - category: dimension
       expression: coalesce(${events__principal__user__email_addresses.events__principal__user__email_addresses},
         "-")
@@ -70,15 +79,6 @@
       dimension: category
       _kind_hint: dimension
       _type_hint: string
-    - category: table_calculation
-      expression: substring(${events.last_principal_entity_uid_standardized}, position(${events.last_principal_entity_uid_standardized},":")+1,
-        length(${events.last_principal_entity_uid_standardized}))
-      label: Entity name
-      value_format:
-      value_format_name:
-      _kind_hint: measure
-      table_calculation: entity_name
-      _type_hint: string
     - category: dimension
       expression: coalesce(${events__principal__ip.events__principal__ip}, "Not Available")
       label: Source IP
@@ -103,9 +103,9 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     show_sql_query_menu_options: false
-    column_order: ["$$$_row_numbers_$$$", entity_name, events.last_category, events.last_behaviour,
-      events.entities_pivot_url, source_ip, events.event_time_time, events.last_principal_data_source,
-      list_of_metadata_product_log_id]
+    column_order: ["$$$_row_numbers_$$$", events.metadata__product_log_id, entity_name,
+      events.last_category, events.last_behaviour, events.entities_pivot_url, source_ip,
+      events.last_source_ip, events.last_principal_data_source, events.last_event_time]
     show_totals: true
     show_row_totals: true
     truncate_header: false
@@ -115,10 +115,12 @@
       events.event_time_time: Last updated
       events__additional__fields.value__string_value: Detection Fields
       events.last_behaviour: Behaviour
-      events.last_category: Category
       events.last_principal_data_source: Data Source
       events.entities_pivot_url: Vectra Pivot
       list_of_metadata_product_log_id: Product ID
+      events.last_event_time: Last Updated
+      events.last_source_ip: Source IP
+      events.last_category: Detection Category
     series_cell_visualizations: {}
     defaults_version: 1
     hidden_pivots: {}
@@ -136,7 +138,7 @@
     model: chronicle-poc-test
     explore: events
     type: looker_area
-    fields: [events.event_time_time, events.category, count_of_category]
+    fields: [events.event_time_time, events.category, count_of_metadata_id]
     pivots: [events.category]
     sorts: [events.category, events.event_time_time desc]
     limit: 5000
@@ -173,6 +175,13 @@
       expression: ''
       label: Count of Category
       measure: count_of_category
+      type: count_distinct
+    - _kind_hint: measure
+      _type_hint: number
+      based_on: events.metadata__id
+      expression: ''
+      label: Count of Metadata ID
+      measure: count_of_metadata_id
       type: count_distinct
     x_axis_gridlines: false
     y_axis_gridlines: true
@@ -215,7 +224,7 @@
     title_text: ''
     subtitle_text: ''
     body_text: '[{"type":"h1","children":[{"text":"Detection field is not working
-      as expected and Source IP field not found"}],"align":"center"}]'
+      as expected"}],"align":"center"}]'
     rich_content_json: '{"format":"slate"}'
     row: 0
     col: 0

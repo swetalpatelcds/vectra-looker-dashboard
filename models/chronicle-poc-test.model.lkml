@@ -8918,6 +8918,12 @@ explore: events {
     fields: [events__security_result__detection_fields__power_error.power_error]
     relationship: one_to_many
   }
+  join: events__security_result__detection_fields__attack_rating {
+    view_label: "Events: Security Result Detection Fields Attack Rating"
+    sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__attack_rating ON ${events__security_result__detection_fields__attack_rating.key} = 'attack_rating';;
+    fields: [events__security_result__detection_fields__attack_rating.attack_rating]
+    relationship: one_to_many
+  }
   join: events__security_result__detection_fields__type {
     view_label: "Events: Security Result Detection Fields Type"
     sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__type ON ${events__security_result__detection_fields__type.key} = 'type' ;;
@@ -8946,6 +8952,12 @@ explore: events {
     view_label: "Events: target User Attribute Labels Entity Name"
     sql: LEFT JOIN UNNEST(${events.target__user__attribute__labels}) as events__target__user__attribute__labels__entity_name ON ${events__target__user__attribute__labels__entity_name.key} = 'entity_name' ;;
     fields: [events__target__user__attribute__labels__entity_name.entity_name]
+    relationship: one_to_many
+  }
+  join: events__target__user__attribute__labels__username {
+    view_label: "Events: target User Attribute Labels Entity Name"
+    sql: LEFT JOIN UNNEST(${events.target__user__attribute__labels}) as events__target__user__attribute__labels__username ON ${events__target__user__attribute__labels__username.key} = 'username' ;;
+    fields: [events__target__user__attribute__labels__username.username]
     relationship: one_to_many
   }
   join: events__security_result__detection_fields__network_aggregated_peak_traffic_mbps {

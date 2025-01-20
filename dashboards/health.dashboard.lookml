@@ -10,7 +10,8 @@
     model: chronicle-poc-test
     explore: events
     type: looker_grid
-    fields: [events__security_result__detection_fields__cpu_user_percent.cpu_user_percent,
+    fields: [events__security_result__detection_fields__system_version_last_update.system_version_last_update,
+      events__security_result__detection_fields__cpu_user_percent.cpu_user_percent,
       events__security_result__detection_fields__cpu_system_percent.cpu_system_percent,
       events__security_result__detection_fields__cpu_idle_percent.cpu_idle_percent,
       events__security_result__detection_fields__disk_disk_utilization_usage_percent.disk_disk_utilization_usage_percent,
@@ -20,7 +21,8 @@
       events.event_time_time]
     filters:
       events.log_type: Health
-    sorts: [events.event_time_time desc]
+    sorts: [events__security_result__detection_fields__system_version_last_update.system_version_last_update
+        desc]
     limit: 1
     column_limit: 50
     show_view_names: false
