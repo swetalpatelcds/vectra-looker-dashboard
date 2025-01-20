@@ -1,6 +1,6 @@
 ---
-- dashboard: detection_final
-  title: Detection Final
+- dashboard: detection
+  title: Detection
   layout: newspaper
   description: ''
   preferred_slug: MD4y6ECb2vxk0cCwvFCpw8
