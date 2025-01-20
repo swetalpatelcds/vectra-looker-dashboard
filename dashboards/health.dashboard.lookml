@@ -10,8 +10,7 @@
     model: chronicle-poc-test
     explore: events
     type: looker_grid
-    fields: [events__security_result__detection_fields__system_version_last_update_utc.system_version_last_update_utc,
-      events__security_result__detection_fields__cpu_user_percent.cpu_user_percent,
+    fields: [events__security_result__detection_fields__cpu_user_percent.cpu_user_percent,
       events__security_result__detection_fields__cpu_system_percent.cpu_system_percent,
       events__security_result__detection_fields__cpu_idle_percent.cpu_idle_percent,
       events__security_result__detection_fields__disk_disk_utilization_usage_percent.disk_disk_utilization_usage_percent,
@@ -20,7 +19,7 @@
       events__security_result__detection_fields__power_status.power_status, events__security_result__detection_fields__power_error.power_error,
       events.event_time_time]
     filters:
-      events__security_result__detection_fields__system_version_last_update_utc.system_version_last_update_utc: "-NULL"
+      events.log_type: Health
     sorts: [events.event_time_time desc]
     limit: 1
     column_limit: 50
@@ -99,10 +98,13 @@
     fields: [events.event_time_time, events.observer__hostname, events__observer__ip.events__observer__ip,
       events__security_result__detection_fields__network_aggregated_peak_traffic_mbps.network_aggregated_peak_traffic_mbps,
       events__security_result__detection_fields__connectivity_sensors_status.connectivity_sensors_status,
-      events__security_result__detection_fields__trafficdrop_sensors_status.trafficdrop_sensors_status]
+      events__security_result__detection_fields__trafficdrop_sensors_status.trafficdrop_sensors_status,
+      events__security_result__detection_fields__trafficdrop_sensors_error.trafficdrop_sensors_error]
     filters:
       events.observer__hostname: "-NULL"
-    sorts: [events.event_time_time desc]
+      events.log_type: Health
+    sorts: [events__security_result__detection_fields__connectivity_sensors_status.connectivity_sensors_status
+        desc]
     limit: 1
     column_limit: 50
     show_view_names: false
@@ -138,6 +140,8 @@
         Status
       events__security_result__detection_fields__trafficdrop_sensors_status.trafficdrop_sensors_status: Trafficdrop
         Status
+      events__security_result__detection_fields__trafficdrop_sensors_error.trafficdrop_sensors_error: Trafficdrop
+        Error
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_y_axis_labels: true

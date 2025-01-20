@@ -1,6 +1,6 @@
 ---
-- dashboard: entities_final
-  title: Entities Final
+- dashboard: entities
+  title: Entities
   layout: newspaper
   description: ''
   preferred_slug: Ux4vJDXbDzuJ0QbKKVOgCK
@@ -181,6 +181,7 @@
       Time: events.event_time_minute
       Priority Details: events__security_result.priority_details
       Data Source: events.target_data_source
+      Log Type: events.log_type
     row: 6
     col: 0
     width: 24
@@ -193,7 +194,7 @@
     fields: [count_of_target_user_userid]
     filters:
       events__security_result.priority_details: 'true'
-    limit: 500
+    limit: 5000
     column_limit: 50
     dynamic_fields:
     - category: dimension
@@ -317,6 +318,7 @@
     listen:
       Time: events.event_time_minute
       Data Source: events.target_data_source
+      Log Type: events.log_type
     row: 0
     col: 0
     width: 12
@@ -329,7 +331,7 @@
     fields: [count_of_target_user_userid]
     filters:
       events__security_result.priority_details: 'false'
-    limit: 500
+    limit: 5000
     column_limit: 50
     dynamic_fields:
     - category: dimension
@@ -453,15 +455,31 @@
     listen:
       Time: events.event_time_minute
       Data Source: events.target_data_source
+      Log Type: events.log_type
     row: 0
     col: 12
     width: 12
     height: 6
   filters:
+  - name: Log Type
+    title: Log Type
+    type: field_filter
+    default_value: Scoring
+    allow_multiple_values: true
+    required: true
+    ui_config:
+      type: dropdown_menu
+      display: popover
+      options:
+      - Scoring
+    model: chronicle-poc-test
+    explore: events
+    listens_to_filters: []
+    field: events.log_type
   - name: Time
     title: Time
     type: field_filter
-    default_value: ''
+    default_value: 7 day
     allow_multiple_values: true
     required: false
     ui_config:
@@ -483,7 +501,7 @@
       display: inline
     model: chronicle-poc-test
     explore: events
-    listens_to_filters: []
+    listens_to_filters: [Log Type]
     field: events__security_result__detection_fields__type.type
   - name: Data Source
     title: Data Source
@@ -496,7 +514,7 @@
       display: inline
     model: chronicle-poc-test
     explore: events
-    listens_to_filters: []
+    listens_to_filters: [Log Type]
     field: events.target_data_source
   - name: Priority Details
     title: Priority Details

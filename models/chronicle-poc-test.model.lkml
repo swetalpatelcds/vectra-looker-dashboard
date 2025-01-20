@@ -8864,10 +8864,10 @@ explore: events {
     fields: [events__security_result__detection_fields__urgency_score.urgency_score]
     relationship: one_to_many
   }
-  join: events__security_result__detection_fields__system_version_last_update_utc {
-    view_label: "Events: Security Result Detection Fields System Version Last Update UTC"
-    sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__system_version_last_update_utc ON ${events__security_result__detection_fields__system_version_last_update_utc.key} = 'system_version_last_update_utc';;
-    fields: [events__security_result__detection_fields__system_version_last_update_utc.system_version_last_update_utc]
+  join: events__security_result__detection_fields__system_version_last_update {
+    view_label: "Events: Security Result Detection Fields System Version Last Update"
+    sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__system_version_last_update ON ${events__security_result__detection_fields__system_version_last_update.key} = 'system_version_last_update';;
+    fields: [events__security_result__detection_fields__system_version_last_update.system_version_last_update]
     relationship: one_to_many
   }
   join: events__security_result__detection_fields__cpu_user_percent {
@@ -8918,12 +8918,6 @@ explore: events {
     fields: [events__security_result__detection_fields__power_error.power_error]
     relationship: one_to_many
   }
-  join: events__additional_fields__key__log_type {
-    view_label: "Events: Additional fields key Log Type"
-    sql: LEFT JOIN UNNEST(${events__additional__fields.key}) as events__additional_fields__key__log_type ON ${events__additional_fields__key__log_type.key} = 'log_type';;
-    fields: [events__additional_fields__key__log_type.log_type]
-    relationship: one_to_many
-  }
   join: events__security_result__detection_fields__type {
     view_label: "Events: Security Result Detection Fields Type"
     sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__type ON ${events__security_result__detection_fields__type.key} = 'type' ;;
@@ -8971,6 +8965,12 @@ explore: events {
   sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__trafficdrop_sensors_status ON ${events__security_result__detection_fields__trafficdrop_sensors_status.key} = 'trafficdrop_sensors_status';;
   fields: [events__security_result__detection_fields__trafficdrop_sensors_status.trafficdrop_sensors_status]
   relationship: one_to_many
+  }
+  join: events__security_result__detection_fields__trafficdrop_sensors_error {
+    view_label: "Events: Security Result Detection Fields Traffic Drop Sensors Error"
+    sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__trafficdrop_sensors_error ON ${events__security_result__detection_fields__trafficdrop_sensors_error.key} = 'trafficdrop_sensors_error';;
+    fields: [events__security_result__detection_fields__trafficdrop_sensors_error.trafficdrop_sensors_error]
+    relationship: one_to_many
   }
   join: events__target__artifact__network__smtp__rcpt_to {
     view_label: "Events: Target Artifact Network Smtp Rcpt To"

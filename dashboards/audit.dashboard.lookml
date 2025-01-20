@@ -13,7 +13,7 @@
     fields: [events.event_time_time, events.principal_username_standardized, events__principal__user__attribute__roles.name,
       status, events__security_result.description, list_of_metadata_product_log_id_2]
     filters:
-      events.principal_username_standardized: "-NULL"
+      events.log_type: Audit
     sorts: [events.event_time_time desc]
     limit: 5000
     column_limit: 50
@@ -71,9 +71,9 @@
     defaults_version: 1
     hidden_pivots: {}
     listen:
-      Username: events__principal__user__email_addresses.events__principal__user__email_addresses
       Status: events__security_result.action_details
       Time: events.event_time_time
+      Username: events.principal_username_standardized
     row: 3
     col: 0
     width: 24
@@ -90,10 +90,25 @@
     width: 15
     height: 3
   filters:
+  - name: Log Type
+    title: Log Type
+    type: field_filter
+    default_value: Audit
+    allow_multiple_values: false
+    required: true
+    ui_config:
+      type: dropdown_menu
+      display: inline
+      options:
+      - Audit
+    model: chronicle-poc-test
+    explore: events
+    listens_to_filters: []
+    field: events.log_type
   - name: Time
     title: Time
     type: field_filter
-    default_value: ''
+    default_value: 7 day
     allow_multiple_values: true
     required: false
     ui_config:
@@ -115,7 +130,7 @@
       display: inline
     model: chronicle-poc-test
     explore: events
-    listens_to_filters: [Time]
+    listens_to_filters: [Time, Log Type]
     field: events.principal_username_standardized
   - name: Status
     title: Status
@@ -128,5 +143,5 @@
       display: inline
     model: chronicle-poc-test
     explore: events
-    listens_to_filters: []
+    listens_to_filters: [Log Type]
     field: events__security_result.action_details

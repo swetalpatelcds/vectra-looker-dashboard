@@ -1,6 +1,6 @@
 ---
-- dashboard: detection_final
-  title: Detection Final
+- dashboard: detection
+  title: Detection
   layout: newspaper
   description: ''
   preferred_slug: MD4y6ECb2vxk0cCwvFCpw8
@@ -10,11 +10,13 @@
     model: chronicle-poc-test
     explore: events
     type: looker_grid
-    fields: [events.metadata__product_log_id, events.event_time_time, events.last_principal_entity_uid_standardized,
+    fields: [events.event_time_time, events.last_principal_entity_uid_standardized,
       events.last_behaviour, events.last_category, events.last_principal_data_source,
-      events.entities_pivot_url]
+      events.entities_pivot_url, list_of_metadata_product_log_id]
+    filters:
+      events.log_type: Detection
     sorts: [events.event_time_time desc]
-    limit: 500
+    limit: 100
     column_limit: 50
     dynamic_fields:
     - category: dimension
@@ -93,6 +95,8 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     show_sql_query_menu_options: false
+    column_order: ["$$$_row_numbers_$$$", entity_name, events.last_category, events.last_behaviour,
+      events.entities_pivot_url, events.event_time_time, events.last_principal_data_source]
     show_totals: true
     show_row_totals: true
     truncate_header: false
@@ -105,12 +109,11 @@
       events.last_category: Category
       events.last_principal_data_source: Data Source
       events.entities_pivot_url: Vectra Pivot
+      list_of_metadata_product_log_id: Product ID
     series_cell_visualizations: {}
     defaults_version: 1
     hidden_pivots: {}
-    hidden_fields: [events.metadata__product_log_id, events.last_principal_entity_uid_standardized]
-    column_order: ["$$$_row_numbers_$$$", entity_name, events.last_category, events.last_behaviour,
-      events.entities_pivot_url, events.event_time_time, events.last_principal_data_source]
+    hidden_fields: [events.last_principal_entity_uid_standardized]
     listen:
       Behavior: events.metadata__product_event_type
       Data Source: events.principal_data_source
@@ -127,7 +130,7 @@
     fields: [events.event_time_time, events.category, count_of_category]
     pivots: [events.category]
     sorts: [events.category, events.event_time_time desc]
-    limit: 100
+    limit: 5000
     column_limit: 50
     dynamic_fields:
     - category: dimension
@@ -210,10 +213,25 @@
     width: 13
     height: 2
   filters:
+  - name: Log Type
+    title: Log Type
+    type: field_filter
+    default_value: Detection
+    allow_multiple_values: true
+    required: true
+    ui_config:
+      type: dropdown_menu
+      display: inline
+      options:
+      - Detection
+    model: chronicle-poc-test
+    explore: events
+    listens_to_filters: []
+    field: events.log_type
   - name: Time
     title: Time
     type: field_filter
-    default_value: ''
+    default_value: 7 day
     allow_multiple_values: true
     required: false
     ui_config:
@@ -235,7 +253,7 @@
       display: inline
     model: chronicle-poc-test
     explore: events
-    listens_to_filters: [Time]
+    listens_to_filters: [Time, Log Type]
     field: events.metadata__product_event_type
   - name: Data Source
     title: Data Source
