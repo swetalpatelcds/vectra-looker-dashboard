@@ -210,6 +210,20 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
+    y_axes: [{label: Count of Category, orientation: left, series: [{axisId: count_of_metadata_id,
+            id: Botnet Activity - count_of_metadata_id, name: Botnet Activity}, {
+            axisId: count_of_metadata_id, id: Command & Control - count_of_metadata_id,
+            name: Command & Control}, {axisId: count_of_metadata_id, id: Exfiltration
+              - count_of_metadata_id, name: Exfiltration}, {axisId: count_of_metadata_id,
+            id: Info - count_of_metadata_id, name: Info}, {axisId: count_of_metadata_id,
+            id: Lateral Movement - count_of_metadata_id, name: Lateral Movement},
+          {axisId: count_of_metadata_id, id: Reconnaissance - count_of_metadata_id,
+            name: Reconnaissance}, {axisId: count_of_metadata_id, id: Unknown - count_of_metadata_id,
+            name: Unknown}], showLabels: true, showValues: true, unpinAxis: false,
+        tickDensity: default, tickDensityCustom: 5, type: linear}]
+    x_axis_label: Time
+    x_axis_zoom: true
+    y_axis_zoom: true
     defaults_version: 1
     hidden_pivots: {}
     listen:
