@@ -12,7 +12,7 @@
     type: looker_grid
     fields: [events.metadata__product_log_id, events.last_principal_entity_uid_standardized,
       events.last_behaviour, events.last_category, events.last_principal_data_source,
-      events.last_event_time, events.last_source_ip]
+      events.last_event_time, events.last_source_ip, events.entities_pivot_url]
     filters:
       events.log_type: Detection
     sorts: [events.last_event_time desc]
@@ -104,8 +104,8 @@
     conditional_formatting_include_nulls: false
     show_sql_query_menu_options: false
     column_order: ["$$$_row_numbers_$$$", events.metadata__product_log_id, entity_name,
-      events.last_category, events.last_behaviour, events.entities_pivot_url, source_ip,
-      events.last_source_ip, events.last_principal_data_source, events.last_event_time]
+      events.last_category, events.last_behaviour, events.entities_pivot_url, events.last_principal_data_source,
+      events.last_source_ip, events.last_event_time]
     show_totals: true
     show_row_totals: true
     truncate_header: false
@@ -115,7 +115,7 @@
       events.event_time_time: Last updated
       events__additional__fields.value__string_value: Detection Fields
       events.last_behaviour: Behaviour
-      events.last_principal_data_source: Data Source
+      events.last_principal_data_source: Data Source Type
       events.entities_pivot_url: Vectra Pivot
       list_of_metadata_product_log_id: Product ID
       events.last_event_time: Last Updated

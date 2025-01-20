@@ -101,12 +101,13 @@
       events__security_result__detection_fields__network_aggregated_peak_traffic_mbps.network_aggregated_peak_traffic_mbps,
       events__security_result__detection_fields__connectivity_sensors_status.connectivity_sensors_status,
       events__security_result__detection_fields__trafficdrop_sensors_status.trafficdrop_sensors_status,
-      events__security_result__detection_fields__trafficdrop_sensors_error.trafficdrop_sensors_error]
+      events__security_result__detection_fields__trafficdrop_sensors_error.trafficdrop_sensors_error,
+      events__security_result__detection_fields__connectivity_sensors_error.connectivity_sensors_error,
+      events__security_result__detection_fields__link_status.link_status]
     filters:
       events.observer__hostname: "-NULL"
       events.log_type: Health
-    sorts: [events__security_result__detection_fields__connectivity_sensors_status.connectivity_sensors_status
-        desc]
+    sorts: [events.event_time_time desc]
     limit: 1
     column_limit: 50
     show_view_names: false
@@ -127,8 +128,11 @@
     show_sql_query_menu_options: false
     column_order: ["$$$_row_numbers_$$$", events.observer__hostname, events__observer__ip.events__observer__ip,
       events__security_result__detection_fields__connectivity_sensors_status.connectivity_sensors_status,
+      events__security_result__detection_fields__connectivity_sensors_error.connectivity_sensors_error,
+      events__security_result__detection_fields__trafficdrop_sensors_status.trafficdrop_sensors_status,
+      events__security_result__detection_fields__trafficdrop_sensors_error.trafficdrop_sensors_error,
       events__security_result__detection_fields__network_aggregated_peak_traffic_mbps.network_aggregated_peak_traffic_mbps,
-      events__security_result__detection_fields__trafficdrop_sensors_status.trafficdrop_sensors_status]
+      events__security_result__detection_fields__link_status.link_status]
     show_totals: true
     show_row_totals: true
     truncate_header: false
@@ -143,6 +147,8 @@
       events__security_result__detection_fields__trafficdrop_sensors_status.trafficdrop_sensors_status: Trafficdrop
         Status
       events__security_result__detection_fields__trafficdrop_sensors_error.trafficdrop_sensors_error: Trafficdrop
+        Error
+      events__security_result__detection_fields__connectivity_sensors_error.connectivity_sensors_error: Connectivity
         Error
     x_axis_gridlines: false
     y_axis_gridlines: true

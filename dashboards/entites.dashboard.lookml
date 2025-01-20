@@ -12,7 +12,7 @@
     type: looker_grid
     fields: [events.target_entity_id, events.last_urgency_score, events.last_target_entity_uid_standardized,
       events.last_priority_details, events.last_target_data_source, events.last_importance,
-      events.last_velocity, events.last_event_time, events.last_attack_rating]
+      events.last_velocity, events.last_event_time, events.last_attack_rating, events.entities_pivot_url]
     filters:
       events.target_entity_id: "-NULL"
     sorts: [events.last_urgency_score desc]
@@ -151,7 +151,7 @@
     conditional_formatting_include_nulls: false
     show_sql_query_menu_options: false
     column_order: ["$$$_row_numbers_$$$", events.last_urgency_score, events.last_attack_rating,
-      entity_name_1, events.last_priority_details, events.last_target_data_source,
+      entity_name_1, events.entities_pivot_url, events.last_priority_details, events.last_target_data_source,
       importance_cal, velocity_cal, events.last_event_time]
     show_totals: true
     show_row_totals: true

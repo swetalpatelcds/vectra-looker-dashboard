@@ -8972,6 +8972,12 @@ explore: events {
     fields: [events__security_result__detection_fields__connectivity_sensors_status.connectivity_sensors_status]
     relationship: one_to_many
   }
+  join: events__security_result__detection_fields__connectivity_sensors_error {
+    view_label: "Events: Security Result Detection Fields Connectivity Sensors Status"
+    sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__connectivity_sensors_error ON ${events__security_result__detection_fields__connectivity_sensors_error.key} = 'connectivity_sensors_error';;
+    fields: [events__security_result__detection_fields__connectivity_sensors_error.connectivity_sensors_error]
+    relationship: one_to_many
+  }
   join: events__security_result__detection_fields__trafficdrop_sensors_status {
   view_label: "Events: Security Result Detection Fields Traffic Drop Sensors Status"
   sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__trafficdrop_sensors_status ON ${events__security_result__detection_fields__trafficdrop_sensors_status.key} = 'trafficdrop_sensors_status';;
@@ -8982,6 +8988,12 @@ explore: events {
     view_label: "Events: Security Result Detection Fields Traffic Drop Sensors Error"
     sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__trafficdrop_sensors_error ON ${events__security_result__detection_fields__trafficdrop_sensors_error.key} = 'trafficdrop_sensors_error';;
     fields: [events__security_result__detection_fields__trafficdrop_sensors_error.trafficdrop_sensors_error]
+    relationship: one_to_many
+  }
+  join: events__security_result__detection_fields__link_status {
+    view_label: "Events: Security Result Detection Fields Traffic Drop Sensors Error"
+    sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__link_status ON ${events__security_result__detection_fields__link_status.key} = 'network_interfaces_sensors_w4ftj0a8_eth0_link';;
+    fields: [events__security_result__detection_fields__link_status.link_status]
     relationship: one_to_many
   }
   join: events__target__artifact__network__smtp__rcpt_to {
