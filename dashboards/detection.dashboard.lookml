@@ -13,8 +13,7 @@
     fields: [events.metadata__product_log_id, events.last_principal_entity_uid_standardized,
       events.last_behaviour, events.last_category, events.last_principal_data_source,
       events.last_event_time, events.last_source_ip, events.entities_pivot_url]
-    filters:
-      events.log_type: Detection
+    filters: {}
     sorts: [events.last_event_time desc]
     limit: 100
     column_limit: 50
@@ -126,10 +125,12 @@
     hidden_pivots: {}
     hidden_fields: [events.last_principal_entity_uid_standardized]
     listen:
-      Behavior: events.metadata__product_event_type
-      Data Source: events.principal_data_source
       Time: events.event_time_time
-    row: 8
+      Behavior: events.metadata__product_event_type
+      Log Type: events.log_type
+      Category: events.category
+      Data Source Type: events.principal_data_source
+    row: 7
     col: 0
     width: 24
     height: 7
@@ -138,9 +139,11 @@
     model: chronicle-poc-test
     explore: events
     type: looker_area
-    fields: [events.event_time_time, events.category, count_of_metadata_id]
+    fields: [events.category, count_of_metadata_product_log_id, events.event_time_date]
     pivots: [events.category]
-    sorts: [events.category, events.event_time_time desc]
+    fill_fields: [events.event_time_date]
+    filters: {}
+    sorts: [events.category]
     limit: 5000
     column_limit: 50
     dynamic_fields:
@@ -182,6 +185,13 @@
       expression: ''
       label: Count of Metadata ID
       measure: count_of_metadata_id
+      type: count_distinct
+    - _kind_hint: measure
+      _type_hint: number
+      based_on: events.metadata__product_log_id
+      expression: ''
+      label: Count of Metadata Product Log ID
+      measure: count_of_metadata_product_log_id
       type: count_distinct
     x_axis_gridlines: false
     y_axis_gridlines: true
@@ -227,23 +237,15 @@
     defaults_version: 1
     hidden_pivots: {}
     listen:
-      Data Source: events.principal_data_source
+      Behavior: events.metadata__product_event_type
       Time: events.event_time_time
-    row: 2
-    col: 0
-    width: 24
-    height: 6
-  - name: ''
-    type: text
-    title_text: ''
-    subtitle_text: ''
-    body_text: '[{"type":"h1","children":[{"text":"Detection field is not working
-      as expected"}],"align":"center"}]'
-    rich_content_json: '{"format":"slate"}'
+      Log Type: events.log_type
+      Category: events.category
+      Data Source Type: events.principal_data_source
     row: 0
     col: 0
-    width: 13
-    height: 2
+    width: 24
+    height: 7
   filters:
   - name: Log Type
     title: Log Type
@@ -285,10 +287,23 @@
       display: inline
     model: chronicle-poc-test
     explore: events
-    listens_to_filters: [Time, Log Type]
+    listens_to_filters: [Log Type, Time]
     field: events.metadata__product_event_type
-  - name: Data Source
-    title: Data Source
+  - name: Category
+    title: Category
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: tag_list
+      display: inline
+    model: chronicle-poc-test
+    explore: events
+    listens_to_filters: [Log Type, Time]
+    field: events.category
+  - name: Data Source Type
+    title: Data Source Type
     type: field_filter
     default_value: ''
     allow_multiple_values: true
