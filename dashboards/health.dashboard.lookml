@@ -21,8 +21,7 @@
       events.event_time_time]
     filters:
       events.log_type: Health
-    sorts: [events__security_result__detection_fields__system_version_last_update.system_version_last_update
-        desc]
+    sorts: [events.event_time_time desc]
     limit: 1
     column_limit: 50
     show_view_names: false
