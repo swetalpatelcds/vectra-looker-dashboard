@@ -198,8 +198,8 @@
     totals_color: "#808080"
     hidden_pivots: {}
     defaults_version: 1
-    hidden_fields: [events.target_entity_id, events.last_target_entity_uid_standardized,
-      events.last_importance, events.last_velocity]
+    hidden_fields: [events.last_target_entity_uid_standardized, events.last_importance,
+      events.last_velocity]
     listen:
       Log Type: events.log_type
       Timerange: events.event_time_time
