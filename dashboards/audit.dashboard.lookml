@@ -1,6 +1,6 @@
 ---
 - dashboard: audit
-  title: Audit
+  title: Audit Final
   layout: newspaper
   description: ''
   preferred_slug: mSgrFG6ytUjY62L2xami3N
@@ -81,8 +81,8 @@
     hidden_pivots: {}
     listen:
       Status: events__security_result.action_details
-      Username: events.principal_username_standardized
       Timerange: events.event_time_time
+      Username: events.audit_username_standardized
     row: 3
     col: 0
     width: 24
@@ -135,11 +135,11 @@
     allow_multiple_values: true
     required: false
     ui_config:
-      type: advanced
+      type: dropdown_menu
       display: popover
     model: chronicle-poc-test
     explore: events
-    listens_to_filters: []
+    listens_to_filters: [Timerange, Log Type]
     field: events.audit_username_standardized
   - name: Status
     title: Status
