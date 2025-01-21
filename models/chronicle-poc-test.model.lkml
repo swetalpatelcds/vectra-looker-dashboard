@@ -8936,6 +8936,12 @@ explore: events {
     fields: [events__principal__user__attribute__labels__entity_uid.entity_uid]
     relationship: one_to_many
   }
+  join: events__security_result__detection_fields__unlock_event_timestamp {
+    view_label: "Events: Security Result Detection Fields unlock Event Timestamp"
+    sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__unlock_event_timestamp ON ${events__security_result__detection_fields__unlock_event_timestamp.key} = 'unlock_event_timestamp';;
+    fields: [events__security_result__detection_fields__unlock_event_timestamp.unlock_event_timestamp]
+    relationship: one_to_many
+  }
   join: events__target__user__attribute__labels__name {
     view_label: "Events: target User Attribute Labels Name"
     sql: LEFT JOIN UNNEST(${events.target__user__attribute__labels}) as events__target__user__attribute__labels__name ON ${events__target__user__attribute__labels__name.key} = 'name' ;;
