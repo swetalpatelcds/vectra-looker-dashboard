@@ -161,7 +161,7 @@
       events.event_time_time: Last Updated
       events.last_urgency_score: Urgency Score
       events.last_category: Category
-      events.last_priority_details: Priority
+      events.last_priority_details: Prioritized
       events.last_target_data_source: Data Source Type
       events.last_importance: Importance
       events.last_velocity: Velocity
@@ -169,7 +169,8 @@
       importance_cal: Importance
       velocity_cal: Velocity
       events.last_event_time: Last Updated
-      events.last_attack_rating: Attack rating
+      events.last_attack_rating: Attack Rating
+      entity_name_1: Entity Name
     series_cell_visualizations: {}
     x_axis_gridlines: false
     y_axis_gridlines: true

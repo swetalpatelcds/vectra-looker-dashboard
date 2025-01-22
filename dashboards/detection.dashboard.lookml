@@ -21,7 +21,7 @@
     - category: table_calculation
       expression: substring(${events.last_principal_entity_uid_standardized}, position(${events.last_principal_entity_uid_standardized},":")+1,
         length(${events.last_principal_entity_uid_standardized}))
-      label: Entity name
+      label: Entity Name
       value_format:
       value_format_name:
       _kind_hint: measure
@@ -125,11 +125,11 @@
     hidden_pivots: {}
     hidden_fields: [events.last_principal_entity_uid_standardized]
     listen:
-      Time: events.event_time_time
       Behavior: events.metadata__product_event_type
       Log Type: events.log_type
       Category: events.category
       Data Source Type: events.principal_data_source
+      Timerange: events.event_time_time
     row: 7
     col: 0
     width: 24
@@ -238,10 +238,10 @@
     hidden_pivots: {}
     listen:
       Behavior: events.metadata__product_event_type
-      Time: events.event_time_time
       Log Type: events.log_type
       Category: events.category
       Data Source Type: events.principal_data_source
+      Timerange: events.event_time_time
     row: 0
     col: 0
     width: 24
@@ -262,8 +262,8 @@
     explore: events
     listens_to_filters: []
     field: events.log_type
-  - name: Time
-    title: Time
+  - name: Timerange
+    title: Timerange
     type: field_filter
     default_value: 7 day
     allow_multiple_values: true
@@ -287,7 +287,7 @@
       display: inline
     model: chronicle-poc-test
     explore: events
-    listens_to_filters: [Log Type, Time]
+    listens_to_filters: [Log Type, Timerange]
     field: events.metadata__product_event_type
   - name: Category
     title: Category
@@ -297,10 +297,10 @@
     required: false
     ui_config:
       type: tag_list
-      display: inline
+      display: popover
     model: chronicle-poc-test
     explore: events
-    listens_to_filters: [Log Type, Time]
+    listens_to_filters: [Log Type, Timerange]
     field: events.category
   - name: Data Source Type
     title: Data Source Type
