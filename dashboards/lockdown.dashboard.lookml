@@ -10,11 +10,11 @@
     model: chronicle-poc-test
     explore: events
     type: looker_grid
-    fields: [events.event_time_time, events.lockout_time_time, events.target_entity_name_standardized,
-      events.is_locked, events.principal__user__user_display_name, events.metadata__product_event_type,
+    fields: [events.event_time_time, events.target_entity_name_standardized, events.is_locked,
+      events.principal__user__user_display_name, events.metadata__product_event_type,
       events.formatted_unlock_timestamp]
     filters: {}
-    sorts: [events.lockout_time_time desc]
+    sorts: [events.event_time_time desc]
     limit: 100
     column_limit: 50
     show_view_names: false
@@ -34,8 +34,7 @@
     conditional_formatting_include_nulls: false
     show_sql_query_menu_options: false
     column_order: ["$$$_row_numbers_$$$", events.target_entity_name_standardized,
-      events.lockout_time_time, events.principal__user__user_display_name, events.formatted_unlock_timestamp,
-      events__security_result__detection_fields__unlock_event_timestamp.unlock_event_timestamp,
+      events.event_time_time, events.principal__user__user_display_name, events.formatted_unlock_timestamp,
       events.is_locked, events.metadata__product_event_type]
     show_totals: true
     show_row_totals: true
@@ -50,6 +49,7 @@
         Date
       events.formatted_unlock_timestamp: Unlock Date
       events.metadata__product_event_type: Entity Type
+      events.event_time_time: Locked Date
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_y_axis_labels: true
@@ -76,12 +76,12 @@
     show_silhouette: false
     totals_color: "#808080"
     defaults_version: 1
-    hidden_fields: [events.event_time_time]
     listen:
       Log Type: events.log_type
       Entity Type: events.metadata__product_event_type
       Is Locked: events.is_locked
       Timerange: events.event_time_time
+      Product Name: events.metadata__product_name
     row: 0
     col: 0
     width: 24
@@ -124,7 +124,7 @@
     required: false
     ui_config:
       type: dropdown_menu
-      display: popover
+      display: inline
     model: chronicle-poc-test
     explore: events
     listens_to_filters: [Timerange, Log Type]
@@ -142,3 +142,18 @@
     explore: events
     listens_to_filters: [Timerange, Log Type]
     field: events.is_locked
+  - name: Product Name
+    title: Product Name
+    type: field_filter
+    default_value: XDR
+    allow_multiple_values: true
+    required: true
+    ui_config:
+      type: dropdown_menu
+      display: popover
+      options:
+      - XDR
+    model: chronicle-poc-test
+    explore: events
+    listens_to_filters: []
+    field: events.metadata__product_name
