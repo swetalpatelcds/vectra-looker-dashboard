@@ -76,28 +76,17 @@
       events.last_audit_username_standardized: Username
       events.last_audit_roles_name: Role
     series_cell_visualizations: {}
-    hidden_fields:
+    hidden_fields: [events.metadata__product_log_id]
     defaults_version: 1
     hidden_pivots: {}
     listen:
       Status: events__security_result.action_details
       Timerange: events.event_time_time
       Username: events.audit_username_standardized
-    row: 3
+    row: 0
     col: 0
     width: 24
     height: 7
-  - name: ''
-    type: text
-    title_text: ''
-    subtitle_text: ''
-    body_text: '[{"type":"h1","children":[{"text":"Detection fields are not working
-      as expected"}],"align":"center"}]'
-    rich_content_json: '{"format":"slate"}'
-    row: 0
-    col: 0
-    width: 15
-    height: 3
   filters:
   - name: Log Type
     title: Log Type
@@ -136,7 +125,7 @@
     required: false
     ui_config:
       type: dropdown_menu
-      display: popover
+      display: inline
     model: chronicle-poc-test
     explore: events
     listens_to_filters: [Timerange, Log Type]

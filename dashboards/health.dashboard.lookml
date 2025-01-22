@@ -90,7 +90,7 @@
     row: 0
     col: 0
     width: 24
-    height: 4
+    height: 3
   - title: Sensor Table
     name: Sensor Table
     model: chronicle-poc-test
@@ -177,7 +177,7 @@
     defaults_version: 1
     hidden_fields: [events.event_time_time]
     listen: {}
-    row: 4
+    row: 3
     col: 0
     width: 24
-    height: 6
+    height: 3

@@ -200,7 +200,7 @@
     hidden_pivots: {}
     defaults_version: 1
     hidden_fields: [events.last_target_entity_uid_standardized, events.last_importance,
-      events.last_velocity]
+      events.last_velocity, events.target_entity_id]
     listen:
       Log Type: events.log_type
       Timerange: events.event_time_time
@@ -219,6 +219,7 @@
     fields: [count_of_target_entity_id]
     filters:
       events__security_result.priority_details: 'true'
+      events.target_entity_id: "-NULL"
     limit: 5000
     column_limit: 50
     dynamic_fields:

@@ -1,6 +1,6 @@
 ---
-- dashboard: detection
-  title: Detection
+- dashboard: detection_final
+  title: Detection Final
   layout: newspaper
   description: ''
   preferred_slug: MD4y6ECb2vxk0cCwvFCpw8
@@ -123,7 +123,7 @@
     series_cell_visualizations: {}
     defaults_version: 1
     hidden_pivots: {}
-    hidden_fields: [events.last_principal_entity_uid_standardized]
+    hidden_fields: [events.last_principal_entity_uid_standardized, events.metadata__product_log_id]
     listen:
       Behavior: events.metadata__product_event_type
       Log Type: events.log_type
