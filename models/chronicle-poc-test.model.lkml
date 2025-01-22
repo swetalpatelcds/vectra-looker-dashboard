@@ -6030,7 +6030,7 @@ explore: ingestion_metrics {
 }
 
 explore: events {
-  sql_always_where: ${metadata__log_type} = "VECTRA_DETECT" ;;
+  sql_always_where: ${metadata__log_type} = "VECTRA_DETECT" AND ${metadata__product_name} = "XDR" ;;
   join: events__about {
     view_label: "Events: About"
     sql: LEFT JOIN UNNEST(${events.about}) as events__about ;;

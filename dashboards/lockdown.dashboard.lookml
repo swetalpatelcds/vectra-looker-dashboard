@@ -81,7 +81,6 @@
       Entity Type: events.metadata__product_event_type
       Is Locked: events.is_locked
       Timerange: events.event_time_time
-      Product Name: events.metadata__product_name
     row: 0
     col: 0
     width: 24
@@ -142,18 +141,3 @@
     explore: events
     listens_to_filters: [Timerange, Log Type]
     field: events.is_locked
-  - name: Product Name
-    title: Product Name
-    type: field_filter
-    default_value: XDR
-    allow_multiple_values: true
-    required: true
-    ui_config:
-      type: dropdown_menu
-      display: popover
-      options:
-      - XDR
-    model: chronicle-poc-test
-    explore: events
-    listens_to_filters: []
-    field: events.metadata__product_name
