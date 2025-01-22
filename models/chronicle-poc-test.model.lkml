@@ -19167,6 +19167,11 @@ explore: events {
     sql: LEFT JOIN UNNEST(${events__extensions__vulns__vulnerabilities__about__process_ancestors.file__security_result__verdict__verdict__third_party_sources}) as events__extensions__vulns__vulnerabilities__about__process_ancestors__file__security_result__verdict__verdict__third_party_sources ;;
     relationship: one_to_many
   }
+  join: prioritized_not_prioritized {
+    type: left_outer
+    sql_on:  ${prioritized_not_prioritized.target_entity_id} = ${events.target_entity_id};;
+    relationship: many_to_many
+  }
   # join: product_title_extract {
   #   type: left_outer
   #   sql_on: ${events.metadata__product_log_id} =  ${product_title_extract.events_metadata__product_log_id};;
