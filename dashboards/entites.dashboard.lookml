@@ -205,9 +205,9 @@
     listen:
       Log Type: events.log_type
       Timerange: events.event_time_time
-      Entity Type: events__security_result__detection_fields__type.type
       Data Source Type: events.target_data_source
       Prioritized: prioritized_not_prioritized.last_priority_details
+      Entity Type: events__security_result__detection_fields__type.type
     row: 6
     col: 0
     width: 24
@@ -257,6 +257,7 @@
       Timerange: events.event_time_time
       Data Source Type: events.target_data_source
       Log Type: events.log_type
+      Entity Type: events__security_result__detection_fields__type.type
     row: 0
     col: 12
     width: 12
@@ -306,6 +307,7 @@
       Timerange: events.event_time_time
       Data Source Type: events.target_data_source
       Log Type: events.log_type
+      Entity Type: events__security_result__detection_fields__type.type
     row: 0
     col: 0
     width: 12
@@ -374,7 +376,7 @@
     required: false
     ui_config:
       type: dropdown_menu
-      display: popover
+      display: inline
     model: chronicle-poc-test
     explore: events
     listens_to_filters: []
