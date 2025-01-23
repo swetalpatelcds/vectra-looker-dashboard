@@ -15,6 +15,7 @@
       events.last_velocity, events.last_event_time, events.last_attack_rating, events.entities_pivot_url]
     filters:
       events.target_entity_id: "-NULL"
+      events__security_result.priority_details: false,true
     sorts: [events.last_urgency_score desc]
     limit: 100
     column_limit: 50
@@ -206,156 +207,10 @@
       Timerange: events.event_time_time
       Entity Type: events__security_result__detection_fields__type.type
       Data Source Type: events.target_data_source
-      Prioritized: events__security_result.priority_details
+      Prioritized: prioritized_not_prioritized.last_priority_details
     row: 6
     col: 0
     width: 24
-    height: 6
-  - title: Prioritized
-    name: Prioritized
-    model: chronicle-poc-test
-    explore: events
-    type: single_value
-    fields: [count_of_target_entity_id]
-    filters:
-      events__security_result.priority_details: 'true'
-      events.target_entity_id: "-NULL"
-    limit: 5000
-    column_limit: 50
-    dynamic_fields:
-    - category: dimension
-      expression: 'coalesce(${events__target__user__email_addresses.events__target__user__email_addresses},
-        "-")
-
-        '
-      label: Source_Entity
-      value_format:
-      value_format_name:
-      dimension: source_entity
-      _kind_hint: dimension
-      _type_hint: string
-    - category: measure
-      expression: ''
-      label: List of Events Target User Email Addresses
-      based_on: events__target__user__email_addresses.events__target__user__email_addresses
-      _kind_hint: measure
-      measure: list_of_events_target_user_email_addresses
-      type: list
-      _type_hint: list
-    - _kind_hint: measure
-      _type_hint: list
-      based_on: events.target__user__userid
-      expression: ''
-      label: List of Target User Userid
-      measure: list_of_target_user_userid
-      type: list
-    - category: dimension
-      expression: |-
-        case(
-            when(substring(${events__target__user__email_addresses.events__target__user__email_addresses}, 1, position(${events__target__user__email_addresses.events__target__user__email_addresses}, ":")) = "0365", "0365"),
-            when(substring(${events__target__user__email_addresses.events__target__user__email_addresses}, 1, position(${events__target__user__email_addresses.events__target__user__email_addresses}, ":")) = "AWS", "AWS"),
-            when(substring(${events__target__user__email_addresses.events__target__user__email_addresses}, 1, position(${events__target__user__email_addresses.events__target__user__email_addresses}, ":")) = "M365", "M365"),
-            when(substring(${events__target__user__email_addresses.events__target__user__email_addresses}, 1, position(${events__target__user__email_addresses.events__target__user__email_addresses}, ":")) = "SAML", "SAML"),
-        "Network")
-      label: data_source
-      value_format:
-      value_format_name:
-      dimension: data_source
-      _kind_hint: dimension
-      _type_hint: string
-    - category: dimension
-      expression: case(when(substring(${events__target__user__email_addresses.events__target__user__email_addresses},
-        1, position(${events__target__user__email_addresses.events__target__user__email_addresses},
-        ":")) = "O365:", "O365"),when(substring(${events__target__user__email_addresses.events__target__user__email_addresses},
-        1, position(${events__target__user__email_addresses.events__target__user__email_addresses},
-        ":")) = "AWS:", "AWS"),when(substring(${events__target__user__email_addresses.events__target__user__email_addresses},
-        1, position(${events__target__user__email_addresses.events__target__user__email_addresses},
-        ":")) = "M365:", "M365"),when(substring(${events__target__user__email_addresses.events__target__user__email_addresses},
-        1, position(${events__target__user__email_addresses.events__target__user__email_addresses},
-        ":")) = "SAML:", "SAML"),"Network")
-      label: abc_test
-      value_format:
-      value_format_name:
-      dimension: abc_test
-      _kind_hint: dimension
-      _type_hint: string
-    - category: table_calculation
-      expression: coalesce(${events__target__user__email_addresses.events__target__user__email_addresses},
-        "-")
-      label: Updated emails
-      value_format:
-      value_format_name:
-      _kind_hint: dimension
-      table_calculation: updated_emails
-      _type_hint: string
-      is_disabled: true
-    - category: measure
-      expression:
-      label: Priority Count
-      value_format:
-      value_format_name:
-      based_on: events__security_result.priority_details
-      _kind_hint: measure
-      measure: priority_count
-      type: count_distinct
-      _type_hint: number
-      filters:
-        events__security_result.priority_details: 'true'
-    - category: table_calculation
-      expression: count(${priority_count})
-      label: total count
-      value_format:
-      value_format_name:
-      _kind_hint: measure
-      table_calculation: total_count
-      _type_hint: number
-      is_disabled: true
-    - _kind_hint: measure
-      _type_hint: number
-      based_on: events.target__user__userid
-      expression: ''
-      label: Count of Target User Userid
-      measure: count_of_target_user_userid
-      type: count_distinct
-    - _kind_hint: measure
-      _type_hint: number
-      based_on: events.target_entity_id
-      expression: ''
-      label: Count of Target Entity ID
-      measure: count_of_target_entity_id
-      type: count_distinct
-    custom_color_enabled: true
-    show_single_value_title: true
-    show_comparison: false
-    comparison_type: value
-    comparison_reverse_colors: false
-    show_comparison_label: true
-    enable_conditional_formatting: false
-    conditional_formatting_include_totals: false
-    conditional_formatting_include_nulls: false
-    show_view_names: false
-    show_row_numbers: true
-    transpose: false
-    truncate_text: true
-    hide_totals: false
-    hide_row_totals: false
-    size_to_fit: true
-    table_theme: white
-    limit_displayed_rows: false
-    header_text_alignment: left
-    header_font_size: 12
-    rows_font_size: 12
-    defaults_version: 1
-    hidden_fields: []
-    hidden_pivots: {}
-    listen:
-      Log Type: events.log_type
-      Timerange: events.event_time_time
-      Entity Type: events__security_result__detection_fields__type.type
-      Data Source Type: events.target_data_source
-    row: 0
-    col: 0
-    width: 12
     height: 6
   - title: Not Prioritized
     name: Not Prioritized
@@ -364,107 +219,14 @@
     type: single_value
     fields: [count_of_target_entity_id]
     filters:
-      events__security_result.priority_details: 'false'
+      prioritized_not_prioritized.last_priority_details: 'false'
+      events.target_entity_id: "-NULL"
     limit: 5000
     column_limit: 50
     dynamic_fields:
-    - category: dimension
-      expression: 'coalesce(${events__target__user__email_addresses.events__target__user__email_addresses},
-        "-")
-
-        '
-      label: Source_Entity
-      value_format:
-      value_format_name:
-      dimension: source_entity
-      _kind_hint: dimension
-      _type_hint: string
-    - category: measure
-      expression: ''
-      label: List of Events Target User Email Addresses
-      based_on: events__target__user__email_addresses.events__target__user__email_addresses
-      _kind_hint: measure
-      measure: list_of_events_target_user_email_addresses
-      type: list
-      _type_hint: list
-    - _kind_hint: measure
-      _type_hint: list
-      based_on: events.target__user__userid
-      expression: ''
-      label: List of Target User Userid
-      measure: list_of_target_user_userid
-      type: list
-    - category: dimension
-      expression: |-
-        case(
-            when(substring(${events__target__user__email_addresses.events__target__user__email_addresses}, 1, position(${events__target__user__email_addresses.events__target__user__email_addresses}, ":")) = "0365", "0365"),
-            when(substring(${events__target__user__email_addresses.events__target__user__email_addresses}, 1, position(${events__target__user__email_addresses.events__target__user__email_addresses}, ":")) = "AWS", "AWS"),
-            when(substring(${events__target__user__email_addresses.events__target__user__email_addresses}, 1, position(${events__target__user__email_addresses.events__target__user__email_addresses}, ":")) = "M365", "M365"),
-            when(substring(${events__target__user__email_addresses.events__target__user__email_addresses}, 1, position(${events__target__user__email_addresses.events__target__user__email_addresses}, ":")) = "SAML", "SAML"),
-        "Network")
-      label: data_source
-      value_format:
-      value_format_name:
-      dimension: data_source
-      _kind_hint: dimension
-      _type_hint: string
-    - category: dimension
-      expression: case(when(substring(${events__target__user__email_addresses.events__target__user__email_addresses},
-        1, position(${events__target__user__email_addresses.events__target__user__email_addresses},
-        ":")) = "O365:", "O365"),when(substring(${events__target__user__email_addresses.events__target__user__email_addresses},
-        1, position(${events__target__user__email_addresses.events__target__user__email_addresses},
-        ":")) = "AWS:", "AWS"),when(substring(${events__target__user__email_addresses.events__target__user__email_addresses},
-        1, position(${events__target__user__email_addresses.events__target__user__email_addresses},
-        ":")) = "M365:", "M365"),when(substring(${events__target__user__email_addresses.events__target__user__email_addresses},
-        1, position(${events__target__user__email_addresses.events__target__user__email_addresses},
-        ":")) = "SAML:", "SAML"),"Network")
-      label: abc_test
-      value_format:
-      value_format_name:
-      dimension: abc_test
-      _kind_hint: dimension
-      _type_hint: string
-    - category: table_calculation
-      expression: coalesce(${events__target__user__email_addresses.events__target__user__email_addresses},
-        "-")
-      label: Updated emails
-      value_format:
-      value_format_name:
-      _kind_hint: dimension
-      table_calculation: updated_emails
-      _type_hint: string
-      is_disabled: true
-    - category: measure
-      expression:
-      label: Priority Count
-      value_format:
-      value_format_name:
-      based_on: events__security_result.priority_details
-      _kind_hint: measure
-      measure: priority_count
-      type: count_distinct
-      _type_hint: number
-      filters:
-        events__security_result.priority_details: 'true'
-    - category: table_calculation
-      expression: count(${priority_count})
-      label: total count
-      value_format:
-      value_format_name:
-      _kind_hint: measure
-      table_calculation: total_count
-      _type_hint: number
-      is_disabled: true
     - _kind_hint: measure
       _type_hint: number
-      based_on: events.target__user__userid
-      expression: ''
-      label: Count of Target User Userid
-      measure: count_of_target_user_userid
-      type: count_distinct
-    - _kind_hint: measure
-      _type_hint: number
-      based_on: events.target_entity_id
+      based_on: prioritized_not_prioritized.target_entity_id
       expression: ''
       label: Count of Target Entity ID
       measure: count_of_target_entity_id
@@ -491,15 +253,61 @@
     header_font_size: 12
     rows_font_size: 12
     defaults_version: 1
-    hidden_fields: []
-    hidden_pivots: {}
     listen:
-      Log Type: events.log_type
       Timerange: events.event_time_time
-      Entity Type: events__security_result__detection_fields__type.type
       Data Source Type: events.target_data_source
+      Log Type: events.log_type
     row: 0
     col: 12
+    width: 12
+    height: 6
+  - title: Prioritized
+    name: Prioritized
+    model: chronicle-poc-test
+    explore: events
+    type: single_value
+    fields: [count_of_target_entity_id]
+    filters:
+      prioritized_not_prioritized.last_priority_details: 'true'
+      events.target_entity_id: "-NULL"
+    limit: 5000
+    column_limit: 50
+    dynamic_fields:
+    - _kind_hint: measure
+      _type_hint: number
+      based_on: prioritized_not_prioritized.target_entity_id
+      expression: ''
+      label: Count of Target Entity ID
+      measure: count_of_target_entity_id
+      type: count_distinct
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    show_view_names: false
+    show_row_numbers: true
+    transpose: false
+    truncate_text: true
+    hide_totals: false
+    hide_row_totals: false
+    size_to_fit: true
+    table_theme: white
+    limit_displayed_rows: false
+    header_text_alignment: left
+    header_font_size: 12
+    rows_font_size: 12
+    defaults_version: 1
+    listen:
+      Timerange: events.event_time_time
+      Data Source Type: events.target_data_source
+      Log Type: events.log_type
+    row: 0
+    col: 0
     width: 12
     height: 6
   filters:
@@ -566,8 +374,8 @@
     required: false
     ui_config:
       type: dropdown_menu
-      display: inline
+      display: popover
     model: chronicle-poc-test
     explore: events
     listens_to_filters: []
-    field: events__security_result.priority_details
+    field: prioritized_not_prioritized.last_priority_details
