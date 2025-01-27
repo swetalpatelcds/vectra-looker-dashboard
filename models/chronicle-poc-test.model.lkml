@@ -2,6 +2,7 @@ connection: "chronicle"
 
 # include all the views
 include: "/views/**/*.view.lkml"
+include: "/dashboards/**/*.dashboard"
 
 datagroup: chronicle_poc_test_default_datagroup {
   # sql_trigger: SELECT MAX(id) FROM etl_log;;
@@ -6029,7 +6030,7 @@ explore: ingestion_metrics {
 }
 
 explore: events {
-  sql_always_where: ${metadata__log_type} = "VECTRA_DETECT" ;;
+  sql_always_where: ${metadata__log_type} = "VECTRA_DETECT" AND ${metadata__product_name} = "XDR" ;;
   join: events__about {
     view_label: "Events: About"
     sql: LEFT JOIN UNNEST(${events.about}) as events__about ;;
@@ -8863,10 +8864,10 @@ explore: events {
     fields: [events__security_result__detection_fields__urgency_score.urgency_score]
     relationship: one_to_many
   }
-  join: events__security_result__detection_fields__system_version_last_update_utc {
-    view_label: "Events: Security Result Detection Fields System Version Last Update UTC"
-    sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__system_version_last_update_utc ON ${events__security_result__detection_fields__system_version_last_update_utc.key} = 'system_version_last_update_utc';;
-    fields: [events__security_result__detection_fields__system_version_last_update_utc.system_version_last_update_utc]
+  join: events__security_result__detection_fields__system_version_last_update {
+    view_label: "Events: Security Result Detection Fields System Version Last Update"
+    sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__system_version_last_update ON ${events__security_result__detection_fields__system_version_last_update.key} = 'system_version_last_update';;
+    fields: [events__security_result__detection_fields__system_version_last_update.system_version_last_update]
     relationship: one_to_many
   }
   join: events__security_result__detection_fields__cpu_user_percent {
@@ -8917,10 +8918,10 @@ explore: events {
     fields: [events__security_result__detection_fields__power_error.power_error]
     relationship: one_to_many
   }
-  join: events__additional_fields__key__log_type {
-    view_label: "Events: Additional fields key Log Type"
-    sql: LEFT JOIN UNNEST(${events__additional__fields.key}) as events__additional_fields__key__log_type ON ${events__additional_fields__key__log_type.key} = 'log_type';;
-    fields: [events__additional_fields__key__log_type.log_type]
+  join: events__security_result__detection_fields__attack_rating {
+    view_label: "Events: Security Result Detection Fields Attack Rating"
+    sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__attack_rating ON ${events__security_result__detection_fields__attack_rating.key} = 'attack_rating';;
+    fields: [events__security_result__detection_fields__attack_rating.attack_rating]
     relationship: one_to_many
   }
   join: events__security_result__detection_fields__type {
@@ -8933,6 +8934,12 @@ explore: events {
     view_label: "Events: Principal User Attribute Labels Entity UID"
     sql: LEFT JOIN UNNEST(${events.principal__user__attribute__labels}) as events__principal__user__attribute__labels__entity_uid ON ${events__principal__user__attribute__labels__entity_uid.key} = 'entity_uid' ;;
     fields: [events__principal__user__attribute__labels__entity_uid.entity_uid]
+    relationship: one_to_many
+  }
+  join: events__security_result__detection_fields__unlock_event_timestamp {
+    view_label: "Events: Security Result Detection Fields unlock Event Timestamp"
+    sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__unlock_event_timestamp ON ${events__security_result__detection_fields__unlock_event_timestamp.key} = 'unlock_event_timestamp';;
+    fields: [events__security_result__detection_fields__unlock_event_timestamp.unlock_event_timestamp]
     relationship: one_to_many
   }
   join: events__target__user__attribute__labels__name {
@@ -8953,6 +8960,12 @@ explore: events {
     fields: [events__target__user__attribute__labels__entity_name.entity_name]
     relationship: one_to_many
   }
+  join: events__target__user__attribute__labels__username {
+    view_label: "Events: target User Attribute Labels Entity Name"
+    sql: LEFT JOIN UNNEST(${events.target__user__attribute__labels}) as events__target__user__attribute__labels__username ON ${events__target__user__attribute__labels__username.key} = 'username' ;;
+    fields: [events__target__user__attribute__labels__username.username]
+    relationship: one_to_many
+  }
   join: events__security_result__detection_fields__network_aggregated_peak_traffic_mbps {
     view_label: "Events: Security Result Detection Fields Network Traffic Aggr Peak mbps"
     sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__network_aggregated_peak_traffic_mbps ON ${events__security_result__detection_fields__network_aggregated_peak_traffic_mbps.key} = 'network_traffic_sensors_edr_sensor_interface_peak_traffic_eth0_peak_traffic_mbps';;
@@ -8965,11 +8978,29 @@ explore: events {
     fields: [events__security_result__detection_fields__connectivity_sensors_status.connectivity_sensors_status]
     relationship: one_to_many
   }
+  join: events__security_result__detection_fields__connectivity_sensors_error {
+    view_label: "Events: Security Result Detection Fields Connectivity Sensors Status"
+    sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__connectivity_sensors_error ON ${events__security_result__detection_fields__connectivity_sensors_error.key} = 'connectivity_sensors_error';;
+    fields: [events__security_result__detection_fields__connectivity_sensors_error.connectivity_sensors_error]
+    relationship: one_to_many
+  }
   join: events__security_result__detection_fields__trafficdrop_sensors_status {
   view_label: "Events: Security Result Detection Fields Traffic Drop Sensors Status"
   sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__trafficdrop_sensors_status ON ${events__security_result__detection_fields__trafficdrop_sensors_status.key} = 'trafficdrop_sensors_status';;
   fields: [events__security_result__detection_fields__trafficdrop_sensors_status.trafficdrop_sensors_status]
   relationship: one_to_many
+  }
+  join: events__security_result__detection_fields__trafficdrop_sensors_error {
+    view_label: "Events: Security Result Detection Fields Traffic Drop Sensors Error"
+    sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__trafficdrop_sensors_error ON ${events__security_result__detection_fields__trafficdrop_sensors_error.key} = 'trafficdrop_sensors_error';;
+    fields: [events__security_result__detection_fields__trafficdrop_sensors_error.trafficdrop_sensors_error]
+    relationship: one_to_many
+  }
+  join: events__security_result__detection_fields__link_status {
+    view_label: "Events: Security Result Detection Fields Traffic Drop Sensors Error"
+    sql: LEFT JOIN UNNEST(${events__security_result.detection_fields}) as events__security_result__detection_fields__link_status ON ${events__security_result__detection_fields__link_status.key} = 'network_interfaces_sensors_w4ftj0a8_eth0_link';;
+    fields: [events__security_result__detection_fields__link_status.link_status]
+    relationship: one_to_many
   }
   join: events__target__artifact__network__smtp__rcpt_to {
     view_label: "Events: Target Artifact Network Smtp Rcpt To"
@@ -19135,6 +19166,11 @@ explore: events {
     view_label: "Events: Extensions Vulns Vulnerabilities About Process Ancestors File Security Result Verdict Verdict Third Party Sources"
     sql: LEFT JOIN UNNEST(${events__extensions__vulns__vulnerabilities__about__process_ancestors.file__security_result__verdict__verdict__third_party_sources}) as events__extensions__vulns__vulnerabilities__about__process_ancestors__file__security_result__verdict__verdict__third_party_sources ;;
     relationship: one_to_many
+  }
+  join: prioritized_not_prioritized {
+    type: left_outer
+    sql_on:  ${prioritized_not_prioritized.target_entity_id} = ${events.target_entity_id};;
+    relationship: many_to_many
   }
   # join: product_title_extract {
   #   type: left_outer

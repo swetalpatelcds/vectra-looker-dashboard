@@ -10,13 +10,23 @@
     model: chronicle-poc-test
     explore: events
     type: looker_grid
-    fields: [events.metadata__product_log_id, events.event_time_time, events.last_principal_entity_uid_standardized,
+    fields: [events.metadata__product_log_id, events.last_principal_entity_uid_standardized,
       events.last_behaviour, events.last_category, events.last_principal_data_source,
-      events.entities_pivot_url]
-    sorts: [events.event_time_time desc]
-    limit: 500
+      events.last_event_time, events.last_source_ip, events.entities_pivot_url]
+    filters: {}
+    sorts: [events.last_event_time desc]
+    limit: 100
     column_limit: 50
     dynamic_fields:
+    - category: table_calculation
+      expression: substring(${events.last_principal_entity_uid_standardized}, position(${events.last_principal_entity_uid_standardized},":")+1,
+        length(${events.last_principal_entity_uid_standardized}))
+      label: Entity Name
+      value_format:
+      value_format_name:
+      _kind_hint: measure
+      table_calculation: entity_name
+      _type_hint: string
     - category: dimension
       expression: coalesce(${events__principal__user__email_addresses.events__principal__user__email_addresses},
         "-")
@@ -68,14 +78,13 @@
       dimension: category
       _kind_hint: dimension
       _type_hint: string
-    - category: table_calculation
-      expression: substring(${events.last_principal_entity_uid_standardized}, position(${events.last_principal_entity_uid_standardized},":")+1,
-        length(${events.last_principal_entity_uid_standardized}))
-      label: Entity name
+    - category: dimension
+      expression: coalesce(${events__principal__ip.events__principal__ip}, "Not Available")
+      label: Source IP
       value_format:
       value_format_name:
-      _kind_hint: measure
-      table_calculation: entity_name
+      dimension: source_ip
+      _kind_hint: dimension
       _type_hint: string
     show_view_names: false
     show_row_numbers: true
@@ -93,6 +102,9 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     show_sql_query_menu_options: false
+    column_order: ["$$$_row_numbers_$$$", events.metadata__product_log_id, entity_name,
+      events.last_category, events.last_behaviour, events.entities_pivot_url, events.last_principal_data_source,
+      events.last_source_ip, events.last_event_time]
     show_totals: true
     show_row_totals: true
     truncate_header: false
@@ -102,20 +114,23 @@
       events.event_time_time: Last updated
       events__additional__fields.value__string_value: Detection Fields
       events.last_behaviour: Behaviour
-      events.last_category: Category
-      events.last_principal_data_source: Data Source
+      events.last_principal_data_source: Data Source Type
       events.entities_pivot_url: Vectra Pivot
+      list_of_metadata_product_log_id: Product ID
+      events.last_event_time: Last Updated
+      events.last_source_ip: Source IP
+      events.last_category: Detection Category
     series_cell_visualizations: {}
     defaults_version: 1
     hidden_pivots: {}
-    hidden_fields: [events.metadata__product_log_id, events.last_principal_entity_uid_standardized]
-    column_order: ["$$$_row_numbers_$$$", entity_name, events.last_category, events.last_behaviour,
-      events.entities_pivot_url, events.event_time_time, events.last_principal_data_source]
+    hidden_fields: [events.last_principal_entity_uid_standardized, events.metadata__product_log_id]
     listen:
       Behavior: events.metadata__product_event_type
-      Event Time Time: events.event_time_time
-      Data Source: events.principal_data_source
-    row: 8
+      Log Type: events.log_type
+      Category: events.category
+      Data Source Type: events.principal_data_source
+      Timerange: events.event_time_time
+    row: 7
     col: 0
     width: 24
     height: 7
@@ -124,10 +139,12 @@
     model: chronicle-poc-test
     explore: events
     type: looker_area
-    fields: [events.event_time_time, events.category, count_of_category]
+    fields: [events.category, count_of_metadata_product_log_id, events.event_time_date]
     pivots: [events.category]
-    sorts: [events.category, events.event_time_time desc]
-    limit: 100
+    fill_fields: [events.event_time_date]
+    filters: {}
+    sorts: [events.category]
+    limit: 5000
     column_limit: 50
     dynamic_fields:
     - category: dimension
@@ -162,6 +179,20 @@
       label: Count of Category
       measure: count_of_category
       type: count_distinct
+    - _kind_hint: measure
+      _type_hint: number
+      based_on: events.metadata__id
+      expression: ''
+      label: Count of Metadata ID
+      measure: count_of_metadata_id
+      type: count_distinct
+    - _kind_hint: measure
+      _type_hint: number
+      based_on: events.metadata__product_log_id
+      expression: ''
+      label: Count of Metadata Product Log ID
+      measure: count_of_metadata_product_log_id
+      type: count_distinct
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -189,31 +220,52 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
+    y_axes: [{label: Count of Category, orientation: left, series: [{axisId: count_of_metadata_id,
+            id: Botnet Activity - count_of_metadata_id, name: Botnet Activity}, {
+            axisId: count_of_metadata_id, id: Command & Control - count_of_metadata_id,
+            name: Command & Control}, {axisId: count_of_metadata_id, id: Exfiltration
+              - count_of_metadata_id, name: Exfiltration}, {axisId: count_of_metadata_id,
+            id: Info - count_of_metadata_id, name: Info}, {axisId: count_of_metadata_id,
+            id: Lateral Movement - count_of_metadata_id, name: Lateral Movement},
+          {axisId: count_of_metadata_id, id: Reconnaissance - count_of_metadata_id,
+            name: Reconnaissance}, {axisId: count_of_metadata_id, id: Unknown - count_of_metadata_id,
+            name: Unknown}], showLabels: true, showValues: true, unpinAxis: false,
+        tickDensity: default, tickDensityCustom: 5, type: linear}]
+    x_axis_label: Time
+    x_axis_zoom: true
+    y_axis_zoom: true
     defaults_version: 1
     hidden_pivots: {}
     listen:
-      Event Time Time: events.event_time_time
-      Data Source: events.principal_data_source
-    row: 2
-    col: 0
-    width: 24
-    height: 6
-  - name: ''
-    type: text
-    title_text: ''
-    subtitle_text: ''
-    body_text: '[{"type":"h1","children":[{"text":"Detection field is not working
-      as expected and Source IP field not found"}],"align":"center"}]'
-    rich_content_json: '{"format":"slate"}'
+      Behavior: events.metadata__product_event_type
+      Log Type: events.log_type
+      Category: events.category
+      Data Source Type: events.principal_data_source
+      Timerange: events.event_time_time
     row: 0
     col: 0
-    width: 13
-    height: 2
+    width: 24
+    height: 7
   filters:
-  - name: Event Time Time
-    title: Event Time Time
+  - name: Log Type
+    title: Log Type
     type: field_filter
-    default_value: ''
+    default_value: Detection
+    allow_multiple_values: true
+    required: true
+    ui_config:
+      type: dropdown_menu
+      display: inline
+      options:
+      - Detection
+    model: chronicle-poc-test
+    explore: events
+    listens_to_filters: []
+    field: events.log_type
+  - name: Timerange
+    title: Timerange
+    type: field_filter
+    default_value: 7 day
     allow_multiple_values: true
     required: false
     ui_config:
@@ -235,10 +287,23 @@
       display: inline
     model: chronicle-poc-test
     explore: events
-    listens_to_filters: []
+    listens_to_filters: [Log Type, Timerange]
     field: events.metadata__product_event_type
-  - name: Data Source
-    title: Data Source
+  - name: Category
+    title: Category
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: tag_list
+      display: popover
+    model: chronicle-poc-test
+    explore: events
+    listens_to_filters: [Log Type, Timerange]
+    field: events.category
+  - name: Data Source Type
+    title: Data Source Type
     type: field_filter
     default_value: ''
     allow_multiple_values: true
